@@ -1,0 +1,168 @@
+body {
+	background-color: #EFEFEF;
+	font: 14px 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	-webkit-font-smoothing: antialiased;
+	font-weight: 300;
+	padding-bottom: 50px;
+}
+
+.addBookmark {
+	margin-bottom: 30px;
+	margin-top: -65px;
+}
+
+.addBookmark h4 {
+	margin-bottom: 20px;
+ 	margin-top: 40px;
+}
+
+.addBookmarkContainer {
+	margin-bottom: 30px;
+}
+
+.addBookmark-btn {
+	margin-top: -30px;
+}
+
+.addBookmark .fa-star, .addBookmark .fa-star-o {
+	margin-top: 10px;
+}
+
+.addBookmark i:hover {
+	cursor:pointer;
+}
+
+.addBookmark-btn {
+	background-color: #337AB7;
+	border: none;
+	color: white;
+}
+
+.btn {
+	padding: 5px 8px;
+}
+
+.bookmark-entries .entry:hover, .favorite-entries .entry:hover {
+	cursor: pointer;
+	background-color: #E9FCFF;
+}
+
+/*.entry form input, .entry form input:focus {
+	border: none;
+    box-shadow: none;
+    background-color: inherit;
+    padding-left: 0;
+}*/
+
+.breadcrumb {
+	border-radius: 10px;
+	background-color: #fff;
+	box-shadow: 0 2px 0px #4A5F7C;
+}
+
+.entry .fa-star-o:hover:before, .addBookmark .fa-star-o:hover:before {
+	color: #F9BF3B;
+	content: "\f005";
+}
+
+.entry .fa-star-o, .addBookmark .fa-star-o {
+	color: #ccc;
+}
+
+.entry .fa-star, .addBookmark .fa-star {
+	color: #F9BF3B;
+}
+
+.entry .fa-star-o, .entry .fa-star {
+	padding-right: 10px;
+}
+
+.edit-entry i{
+	opacity: 0.3;
+	margin-left: 20px;
+}
+
+.edit-entry i:hover{
+	opacity: 0.5;
+}
+
+.favorite-entries .entry, .no-entries .entry, .bookmark-entries .entry {
+	border-bottom: 1px solid;
+	border-color: #ccc;
+	background-color: #fff;
+	padding: 20px;
+}
+
+.favorite-entries .entry:last-child, .no-entries .entry:last-child, .bookmark-entries .entry:last-child {
+	border-radius: 0 0 10px 10px;
+	box-shadow: 0 2px 0px #4A5F7C;
+}
+
+.form-inline {
+	margin-bottom: 0;
+}
+
+label {
+	font-weight: 300;
+}
+
+
+.navbar-default {
+	background-color: #4A5F7C;
+	border: none;
+	border-radius: 0;
+	z-index: 9999;
+}
+
+.navbar-default .navbar-brand, .navbar-default .navbar-brand:hover {
+	color: white;
+}
+
+.nav-tabs {
+    border-bottom: none;
+}
+
+.nav-tabs>li.active>a, .nav-tabs>li.active>a:focus, .nav-tabs>li.active>a:hover {
+    border-color: transparent;
+}
+
+.nav-tabs>li>a {
+	border-radius: 10px 10px 0 0;
+}
+
+.page-content {
+	padding-top: 20px;
+}
+
+.panel-toggle {
+	margin: 0 auto;
+	width: 70px;
+    background-color: #fff;
+    box-shadow: 0 2px 0px #4A5F7C;
+    border-radius: 0 0 10px 10px;
+    padding: 30px 30px 10px 30px;
+    cursor: pointer;
+    z-index: 999;
+    margin-top: -40px;
+
+}
+
+.panel-toggle-btn {
+	border-radius: 100px;
+	box-shadow: 0 0 5px #ccc;
+}
+
+p {
+	margin-bottom: 0;
+}
+
+
+@media (max-width: 768px) {
+	.favorite-entries .entry, .bookmark-entries .entry {
+		padding-bottom: 35px;
+	}
+
+	.favorite-entries .entry form, .bookmark-entries .entry form{
+		padding-bottom: 12px;
+	}
+}

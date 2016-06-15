@@ -1,0 +1,173 @@
+<html ng-app="app">
+<head>
+	<!--<base href="/">-->
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<title>Bookmark Manager</title>
+
+	<!-- Stylesheets -->
+	<link rel="stylesheet" href="vendor/bootstrap/dist/css/bootstrap.min.css">
+	<link rel="stylesheet" href="vendor/angular-bootstrap/ui-bootstrap-csp.css">
+	<link rel="stylesheet" href="vendor/font-awesome/css/font-awesome.min.css">
+	<link rel="stylesheet" href="css/stylesheet.css">
+
+	<!-- Scripts -->
+	<script src="vendor/jquery/dist/jquery.min.js"></script>
+	<script src="vendor/bootstrap/dist/js/bootstrap.min.js"></script>
+	<script src="vendor/angular/angular.min.js"></script>
+	<script src="vendor/angular-route/angular-route.min.js"></script>
+	<script src="vendor/angular-bootstrap/ui-bootstrap.min.js"></script>
+	<script src="vendor/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+	<script src="vendor/angular-local-storage/dist/angular-local-storage.min.js"></script>
+	<script src="app/app.js"></script>
+	<script src="app/directives/customDirectives.js"></script>
+	<script src="app/controller/mainCtrl.js"></script>
+
+</head>
+<body ng-controller="mainCtrl" ng-click="cancelEditing()" data-ng-init="cancelEditing()">
+	
+	<!-- Begin Navbar -->
+	<nav class="navbar navbar-default">
+	  <div class="container-fluid">
+	    <!-- Brand and toggle get grouped for better mobile display -->
+	    <div class="navbar-header">
+	      <a class="navbar-brand" href="#">Bookmark Manager</a>
+	    </div>
+
+	    <!-- Collect the nav links, forms, and other content for toggling -->
+	    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+	      <ul class="nav navbar-nav">
+	        
+	      </ul>
+	    </div><!-- /.navbar-collapse -->
+	  </div><!-- /.container-fluid -->
+	</nav>
+	<!-- End Navbar -->
+	
+	<div class="container page-content">
+
+		<div class="addBookmarkContainer">
+			<div id="addBookmarkPanel" class="addBookmark breadcrumb slideable">
+				<h4>Add Bookmark</h4>
+				<form class="form form-horizontal" ng-submit="addBookmark()">
+				  	<div class="form-group">
+				  		<label for="name" class="col-sm-1 control-label text-center">Name</label>
+				      	<div class="col-sm-11">
+				      		<input type="text" class="form-control" name="name" placeholder="Add Bookmark" ng-model="bookmarkInput.name">
+				      	</div>
+			      	</div>
+			      	<div class="form-group">
+				  		<label for="url" class="col-sm-1 control-label text-center">URL</label>
+				      	<div class="col-sm-11">
+				      		<input type="text" class="form-control" name="url" placeholder="ex. http://yourwebsite.com" ng-model="bookmarkInput.url">
+				      	</div>
+			      	</div>
+			      	<div class="form-group">
+				  		<label for="favorite" class="col-sm-1 control-label text-center">Favorite</label>
+				      	<div class="col-sm-11">
+				      		<i class="fa fa-lg fa-star" ng-click="bookmarkInput.isFavorite=false; $event.stopPropagation();" ng-show="bookmarkInput.isFavorite==true"></i> 
+		      				<i class="fa fa-lg fa-star-o" ng-click="bookmarkInput.isFavorite=true; $event.stopPropagation();" ng-show="bookmarkInput.isFavorite==false"></i> 
+				      	</div>
+			      	</div>
+			      	<div style="float: right">
+			      		<button type="submit" class="btn btn-primary addBookmark-btn">Add</button>
+		      		</div>
+				</form>
+			</div>
+			<div class="panel-toggle text-center" ng-click="panelOpen=!panelOpen" slide-toggle="#addBookmarkPanel">
+				<i ng-show="panelOpen==false" class="fa fa-plus"></i>
+				<i ng-show="panelOpen==true" class="fa fa-minus"></i>
+			</div>
+		</div>
+
+		<uib-tabset active="active" class="favorites">
+
+		    <uib-tab index="0">
+		    	<uib-tab-heading>
+					<i class="fa fa-bookmark"></i> Bookmarks
+		    	</uib-tab-heading>
+
+		    	<div class="no-entries" ng-show="bookmarks.length==0">
+		      		<div class="entry col-sm-12">
+		      			<p>You have no bookmarks</p>
+	      			</div>
+		      	</div>
+		      	<div class="bookmark-entries">
+		      		<div class="entry col-sm-12" ng-repeat="bookmark in bookmarks" ng-click="openWindow(bookmark, $event)">
+		      			<p ng-show="bookmark.editing==false" style="float: left">
+		      				<i class="fa fa-lg fa-star" ng-click="unmarkFavorite(bookmark, $event)" ng-show="bookmark.isFavorite==true"></i> 
+		      				<i class="fa fa-lg fa-star-o" ng-click="markFavorite(bookmark, $event)" ng-show="bookmark.isFavorite==false"></i> 
+		      				<span>{{bookmark.name}}</span>
+	      				</p>
+	      				<div class="edit-entry" style="float: right">
+	      					<div class="deletebtn" ng-show="bookmark.editing==true" ng-click="deleteBookmark(bookmark, $event)">
+	      						<i class="fa fa-lg fa-trash text-default"></i>
+	      					</div>
+	      					<div class="editbtn" ng-show="bookmark.editing==false" ng-click="editBookmark(bookmark, $event)">
+	      						<i class="fa fa-lg fa-pencil text-default"></i>
+	      					</div>
+	      				</div>
+		      			<form class="form-inline" ng-hide="bookmark.editing===false" ng-submit="updateBookmark(bookmark)">
+		      				<div class="form-group">
+		      					<i class="fa fa-lg fa-star" ng-click="unmarkFavorite(bookmark, $event)" ng-show="bookmark.isFavorite==true"></i> 
+		      				<i class="fa fa-lg fa-star-o" ng-click="markFavorite(bookmark, $event)" ng-show="bookmark.isFavorite==false"></i>
+		      				</div>
+							<div class="form-group">
+								<input type="text" class="form-control" value="{{bookmark.name}}" ng-model="bookmark.name">
+							</div>
+							<div class="form-group">
+								<input type="text" class="form-control" value="{{bookmark.url}}" ng-model="bookmark.url">
+							</div>
+							<button type="submit" class="btn btn-primary btn-xs" ng-click="$event.stopPropagation()" style="float: right;">Update</button>
+						</form>
+	      			</div>
+		      	</div>
+		    </uib-tab>
+
+		    <uib-tab index="1"> 
+				<uib-tab-heading>
+		        	<i class="fa fa-star"></i> Favorites
+		      	</uib-tab-heading>
+				
+				<div class="no-entries" ng-show="(bookmarks | filter: { isFavorite: true }).length==0">
+		      		<div class="entry col-sm-12">
+		      			<p>You have no Favorites</p>
+	      			</div>
+		      	</div>
+		      	<div class="favorite-entries">
+		      		<div class="entry col-sm-12" ng-repeat="bookmark in bookmarks | filter: { isFavorite: true }" ng-click="openWindow(bookmark, $event)">
+		      			<p ng-show="bookmark.editing==false" style="float: left">
+		      				<i class="fa fa-lg fa-star" ng-click="unmarkFavorite(bookmark, $event)" ng-show="bookmark.isFavorite==true"></i> 
+		      				<i class="fa fa-lg fa-star-o" ng-click="markFavorite(bookmark, $event)" ng-show="bookmark.isFavorite==false"></i> 
+		      				<span>{{bookmark.name}}</span>
+	      				</p>
+	      				<div class="edit-entry" style="float: right">
+	      					<div class="deletebtn" ng-show="bookmark.editing==true" ng-click="deleteBookmark(bookmark, $event)">
+	      						<i class="fa fa-lg fa-trash text-default"></i>
+	      					</div>
+	      					<div class="editbtn" ng-show="bookmark.editing==false" ng-click="editBookmark(bookmark, $event)">
+	      						<i class="fa fa-lg fa-pencil text-default"></i>
+	      					</div>
+	      				</div>
+		      			<form class="form-inline" ng-hide="bookmark.editing===false" ng-submit="updateBookmark(bookmark)">
+		      				<div class="form-group">
+		      					<i class="fa fa-lg fa-star" ng-click="unmarkFavorite(bookmark, $event)" ng-show="bookmark.isFavorite==true"></i> 
+		      				<i class="fa fa-lg fa-star-o" ng-click="markFavorite(bookmark, $event)" ng-show="bookmark.isFavorite==false"></i>
+		      				</div>
+							<div class="form-group">
+								<input type="text" class="form-control" value="{{bookmark.name}}" ng-model="bookmark.name">
+							</div>
+							<div class="form-group">
+								<input type="text" class="form-control" value="{{bookmark.url}}" ng-model="bookmark.url">
+							</div>
+							<button type="submit" class="btn btn-primary btn-xs" ng-click="$event.stopPropagation()" style="float: right;">Update</button>
+						</form>
+	      			</div>
+		      	</div>
+		    </uib-tab>
+
+	  	</uib-tabset>
+  	</div>
+		
+</body>
+</html>
